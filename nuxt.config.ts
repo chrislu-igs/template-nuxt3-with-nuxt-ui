@@ -6,6 +6,10 @@ export default defineNuxtConfig({
     compatibilityVersion: 4
   },
 
-  modules: ["@nuxt/ui", "@nuxt/eslint"],
+  modules: [
+    "@nuxt/ui",
+    "@nuxt/eslint",
+    "@nuxt/fonts",
+  ],
   compatibilityDate: "2025-01-20"
 })

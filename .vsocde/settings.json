@@ -140,6 +140,7 @@
   ],
   "liveServer.settings.root": "/.output/public",
   "cSpell.ignoreWords": [
+    "nuxt",
     "unocss",
     "vitesse",
     "vite",
