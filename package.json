@@ -23,6 +23,7 @@
     "vue": "latest"
   },
   "dependencies": {
+    "@iconify-json/heroicons": "^1.2.2",
     "@nuxt/fonts": "^0.10.3"
   }
 }
