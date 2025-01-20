@@ -3,14 +3,21 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
 
   future: {
-    compatibilityVersion: 4
+    compatibilityVersion: 4,
   },
 
   modules: [
-    "@nuxt/ui",
-    "@nuxt/eslint",
-    "@nuxt/fonts",
-    "@vueuse/nuxt"
+    '@nuxt/ui',
+    '@nuxt/eslint',
+    '@nuxt/fonts',
+    '@vueuse/nuxt',
   ],
-  compatibilityDate: "2025-01-20"
+
+  eslint: {
+    config: {
+      standalone: false,
+    },
+  },
+
+  compatibilityDate: '2025-01-20',
 })
