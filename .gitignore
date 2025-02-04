@@ -22,3 +22,6 @@ logs
 .env
 .env.*
 !.env.example
+
+# Build files for locales
+app/locales/*.json
