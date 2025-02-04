@@ -46,7 +46,7 @@ export default defineNuxtModule({
       const files = nuxt.options.i18n.locales.map(item => ({ filename: `${item.code}.json`, locale: item.code }))
       files.forEach((item) => {
         getLocaleMessages(item.locale, langApiUrl).then((data) => {
-          save(item.filename, `${nuxt.options.rootDir}/i18n`, JSON.stringify(data, null, 2))
+          save(item.filename, nuxt.options.srcDir, JSON.stringify(data, null, 2))
         })
       })
     })
