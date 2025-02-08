@@ -1,4 +1,9 @@
 <script lang="ts" setup>
+import { useMouse } from '@vueuse/core'
+import { useUseExample } from '../composables/useExample'
+
+useUseExample()
+const { x, y } = useMouse()
 </script>
 
 <template>
@@ -16,6 +21,7 @@
     </UCard>
     <UCard class="mb-10 h-[1000px]">
       <div>test</div>
+      <ExampleComponentA />
     </UCard>
   </UContainer>
 </template>

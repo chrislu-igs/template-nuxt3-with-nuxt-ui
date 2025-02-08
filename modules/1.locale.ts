@@ -1,8 +1,9 @@
+import type { LocaleObject } from '@nuxtjs/i18n'
 import fs from 'node:fs'
 import { defineNuxtModule, useRuntimeConfig } from '@nuxt/kit'
 
 // 存實體檔案
-function save(fileName, dir, data) {
+function save(fileName: string, dir: string, data: string) {
   const filePath = `${dir}/locales`
   // 建立必要路徑
   fs.mkdirSync(filePath, { recursive: true })
@@ -16,7 +17,7 @@ function save(fileName, dir, data) {
     }
   })
 }
-async function getLocaleMessages(locale, url) {
+async function getLocaleMessages(locale: string, url: string) {
   let data = {}
 
   try {
@@ -43,7 +44,8 @@ export default defineNuxtModule({
       console.log('Building before...')
       const config = useRuntimeConfig()
       const langApiUrl = config.public.i18n.baseUrl
-      const files = nuxt.options.i18n.locales.map(item => ({ filename: `${item.code}.json`, locale: item.code }))
+      const currentLocales = nuxt.options.i18n?.locales as LocaleObject[] || []
+      const files = currentLocales.map(item => ({ filename: `${item.code}.json`, locale: item.code }))
       files.forEach((item) => {
         getLocaleMessages(item.locale, langApiUrl).then((data) => {
           save(item.filename, nuxt.options.srcDir, JSON.stringify(data, null, 2))

@@ -5,19 +5,26 @@ export default defineNuxtConfig({
   devServer: {
     host: '0.0.0.0',
   },
+  // sourcemap: true,
+  // imports: {
+  //   autoImport: false,
+  // },
 
   future: {
     compatibilityVersion: 4,
   },
 
-  // experimental: {
-  //   scanPageMeta: true,
-  // },
+  experimental: {
+    asyncContext: true,
+    //   scanPageMeta: true,
+  },
 
   modules: [
     '@nuxt/ui',
     '@nuxt/eslint',
+    'nuxt-eslint-auto-explicit-import',
     '@nuxt/fonts',
+    // ['@vueuse/nuxt', { autoImports: false }],
     '@vueuse/nuxt',
     '@nuxtjs/i18n',
   ],

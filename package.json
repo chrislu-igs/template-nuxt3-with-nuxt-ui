@@ -2,15 +2,17 @@
   "name": "nuxt-app",
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@9.15.4",
+  "packageManager": "pnpm@10.2.1",
   "scripts": {
+    "analyze": "nuxt analyze",
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
+    "gandp": "nuxt generate && nuxt preview",
     "postinstall": "nuxt prepare",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
+    "lint": "nuxt prepare && eslint .",
+    "lint:fix": "nuxt prepare && eslint . --fix",
     "upgrade": "nuxt upgrade --force",
     "cleanup": "nuxt cleanup"
   },
@@ -19,17 +21,27 @@
     "@nuxt/fonts": "^0.10.3"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^3.16.0",
+    "@antfu/eslint-config": "^4.1.1",
     "@nuxt/devtools": "latest",
-    "@nuxt/eslint": "0.7.5",
+    "@nuxt/eslint": "1.0.1",
     "@nuxt/ui": "^2.21.0",
     "@nuxtjs/i18n": "^8.5.6",
-    "@vueuse/nuxt": "12.4.0",
+    "@vueuse/core": "12.5.0",
+    "@vueuse/nuxt": "12.5.0",
     "eslint": "^9.19.0",
     "eslint-plugin-format": "^1.0.1",
     "eslint-plugin-tailwindcss": "^3.18.0",
+    "lint-staged": "^15.4.3",
     "nuxt": "^3.15.4",
+    "nuxt-eslint-auto-explicit-import": "^0.1.1",
+    "simple-git-hooks": "^2.11.1",
     "tailwind-scrollbar": "^3.1.0",
     "vue": "latest"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint-staged"
+  },
+  "lint-staged": {
+    "*": "eslint --fix"
   }
 }
