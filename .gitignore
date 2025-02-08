@@ -24,4 +24,4 @@ logs
 !.env.example
 
 # Build files for locales
-app/locales/*.json
+i18n/locales/*.json

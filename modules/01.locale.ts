@@ -42,13 +42,18 @@ export default defineNuxtModule({
   setup(options, nuxt) {
     nuxt.hook('build:before', () => {
       console.log('Building before...')
+      const isDev = import.meta.env.NODE_ENV === 'development'
+      if (!isDev)
+        return
+
+      console.log('Generating i18n files to help developers to find i18n information in vue files')
       const config = useRuntimeConfig()
       const langApiUrl = config.public.i18n.baseUrl
       const currentLocales = nuxt.options.i18n?.locales as LocaleObject[] || []
       const files = currentLocales.map(item => ({ filename: `${item.code}.json`, locale: item.code }))
       files.forEach((item) => {
         getLocaleMessages(item.locale, langApiUrl).then((data) => {
-          save(item.filename, nuxt.options.srcDir, JSON.stringify(data, null, 2))
+          save(item.filename, `${nuxt.options.rootDir}/i18n`, JSON.stringify(data, null, 2))
         })
       })
     })

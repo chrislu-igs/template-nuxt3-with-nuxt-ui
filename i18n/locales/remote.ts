@@ -1,3 +1,6 @@
+import { tryUseNuxtApp, useRuntimeConfig } from '#app/nuxt'
+import { defineI18nLocale } from '#imports'
+
 export default defineI18nLocale(async (locale) => {
   const nuxtApp = tryUseNuxtApp()
   if (!nuxtApp) {
