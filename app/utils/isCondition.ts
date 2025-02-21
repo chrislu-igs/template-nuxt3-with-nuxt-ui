@@ -1,3 +1,5 @@
+/* eslint-disable unimport/auto-insert */
+
 export const isUndef = (val: any): boolean => typeof val === 'undefined'
 export const isDef = (val: any): boolean => typeof val !== 'undefined'
 export const isBoolean = (val: any): boolean => typeof val === 'boolean'

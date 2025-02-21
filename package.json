@@ -19,7 +19,8 @@
   "dependencies": {
     "@iconify-json/heroicons": "^1.2.2",
     "@nuxt/fonts": "^0.10.3",
-    "consola": "^3.4.0"
+    "consola": "^3.4.0",
+    "defu": "^6.1.4"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.1.1",

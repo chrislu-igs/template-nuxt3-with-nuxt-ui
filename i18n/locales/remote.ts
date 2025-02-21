@@ -1,3 +1,4 @@
+import type { CoreApiResponse } from '~/types/api'
 import { tryUseNuxtApp, useRuntimeConfig } from '#app/nuxt'
 import { defineI18nLocale } from '#imports'
 
@@ -16,7 +17,7 @@ export default defineI18nLocale(async (locale) => {
   }
 
   try {
-    const resp = await $fetch<CoreApiResponse>(`${langApiUrl}/Language/${locale}?GroupIds[]=TOURNWEB`)
+    const resp = await $fetch<CoreApiResponse<Record<string, any>>>(`${langApiUrl}/Language/${locale}?GroupIds[]=TOURNWEB`)
     if (resp.Code === 0) {
       return resp.Data?.[locale] || {}
     }

@@ -1,4 +1,6 @@
 import type { RouteLocationNormalizedLoaded } from 'vue-router'
+import { useRoute } from '#app/composables/router'
+import { useRuntimeConfig } from '#app/nuxt'
 import { ref } from 'vue'
 
 export function useUseExample() {

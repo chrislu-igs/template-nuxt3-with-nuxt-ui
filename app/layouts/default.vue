@@ -1,4 +1,7 @@
 <script setup>
+import { useAppConfig } from '#app/config'
+import { useHead, useHeadSafe } from '#imports'
+
 const appConfig = useAppConfig()
 useHead({
   htmlAttrs: {
@@ -13,4 +16,5 @@ useHeadSafe({
 
 <template>
   <slot />
+  <UNotifications />
 </template>

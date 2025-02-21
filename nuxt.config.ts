@@ -54,6 +54,7 @@ export default defineNuxtConfig({
       i18n: {
         baseUrl: '',
       },
+      apiBaseUrl: '',
       deployEnv: '',
     },
   },

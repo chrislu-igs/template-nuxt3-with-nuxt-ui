@@ -1,3 +1,5 @@
+import { useRoute } from '#app/composables/router'
+import { defineNuxtPlugin, useRuntimeConfig } from '#app/nuxt'
 import { createConsola } from 'consola'
 
 export default defineNuxtPlugin((nuxtApp) => {
@@ -17,7 +19,10 @@ export default defineNuxtPlugin((nuxtApp) => {
   if (isProduction) {
     logger.level = 0
   }
-  if (isProduction && route.query.debug) {
+  if (route.query.debug) {
+    logger.level = 4
+  }
+  if (route.query.trace) {
     logger.level = 5
   }
 

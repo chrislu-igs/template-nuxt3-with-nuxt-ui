@@ -34,6 +34,7 @@ export default withNuxt(
   {
     files: ['**/*.vue', '**/*.ts', '**/*.js', '**/*.mjs'],
     rules: {
+      '@typescript-eslint/consistent-type-definitions': 'off',
       'no-console': 'off',
       'unused-imports/no-unused-vars': 'off',
       'style/max-statements-per-line': 'off',
