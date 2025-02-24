@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import { useAsyncData } from '#app/composables/asyncData'
 import { useMouse } from '@vueuse/core'
-import { useLangApi, useLangErrorApi, useLangFetchErrorApi, useThirdPartyApi, useThirdPartyErrorApi } from '../composables/useApi'
-
-import { useUseExample } from '../composables/useExample'
+import { useLangApi, useLangErrorApi, useLangFetchErrorApi, useThirdPartyApi, useThirdPartyErrorApi } from '../composables/api'
+import { useUseExample } from '../composables/example'
+import { useLogger } from '../composables/logger'
 
 useUseExample()
+const logger = useLogger().withTag('home page')
 type ThirdPartyDataPost = {
   userId: number
   id: number
@@ -23,23 +24,23 @@ const { data, refresh } = await useAsyncData<ThirdPartyDataPost>('dataKey', asyn
 // 只會透過按鈕觸發的 API 不用需要包裝在 useFetch or useAsyncData
 async function openNormal() {
   const result = await useLangApi('zh-CN')
-  console.log('page call: ', result)
+  logger.log('page call: ', result)
 }
 async function openApiError() {
   const result = await useLangErrorApi('zh-CN')
-  console.log('page call: ', result)
+  logger.log('page call: ', result)
 }
 async function openFetchError() {
   const result = await useLangFetchErrorApi('zh-CN')
-  console.log('page call: ', result)
+  logger.log('page call: ', result)
 }
 async function openThirdParty() {
   const result = await useThirdPartyApi()
-  console.log('page call: ', result)
+  logger.log('page call: ', result)
 }
 async function openThirdPartyError() {
   const result = await useThirdPartyErrorApi()
-  console.log('page call: ', result)
+  logger.log('page call: ', result)
 }
 </script>
 

@@ -1,20 +1,13 @@
+import type { ConsolaInstance } from 'consola'
 import { useRoute } from '#app/composables/router'
-import { defineNuxtPlugin, useRuntimeConfig } from '#app/nuxt'
+import { useRuntimeConfig } from '#app/nuxt'
 import { createConsola } from 'consola'
 
-export default defineNuxtPlugin((nuxtApp) => {
-  // Doing something with nuxtApp
-
+export function useLogger(): ConsolaInstance {
   const route = useRoute()
   const $config = useRuntimeConfig()
   const logger = createConsola()
   const isProduction = $config.public.deployEnv === 'production'
-
-  // logger.addReporter({
-  //   log: (logObj) => {
-  //     store.commit('errorHandle/addConsole', logObj)
-  //   }
-  // })
 
   if (isProduction) {
     logger.level = 0
@@ -27,4 +20,6 @@ export default defineNuxtPlugin((nuxtApp) => {
   }
 
   logger.wrapConsole()
-})
+
+  return logger
+}

@@ -1,20 +1,66 @@
 import type { NitroFetchOptions, NitroFetchRequest } from 'nitropack/types'
-import type { CoreApiResponse, SiteOptions } from '~/types/api'
-import { useNuxtApp, useRuntimeConfig } from '#app/nuxt'
+import type { FetchOptions } from 'ofetch'
+import type { CoreApiResponse, DataT, SiteOptions } from '~/types/api'
+import { useRuntimeConfig } from '#app/nuxt'
 import { useLocalStorage, useToast } from '#imports'
 import defu from 'defu'
 import { FetchError } from 'ofetch'
 import { CoreApiErrorResponse } from '~/types/api'
+import { useLogger } from './logger'
 
+// 基本的 API 設定
+function useApi() {
+  const config = useRuntimeConfig()
+  const logger = useLogger()
+
+  const defaults: FetchOptions = {
+    method: 'GET',
+    baseURL: config.public.apiBaseUrl,
+    retry: false,
+    onRequest({ request: url, options }) {
+      const { body, params, method } = options
+
+      if (import.meta.client)
+        logger.withTag(`[Request][${method}]`).trace(`${url}: data = `, body || params, options)
+    },
+
+    onRequestError({ request: url, options }) {
+      const { body, params, method } = options
+
+      if (import.meta.client)
+        logger.withTag(`[Request Error][${method}]`).trace(`${url}: data = `, body || params, options)
+    },
+
+    onResponse({ request: url, response, options }) {
+      const res = response._data as CoreApiResponse<any>
+      const { method } = options
+
+      if (import.meta.client)
+        logger.withTag(`[Response][${method}]`).trace(`${url}: `, res)
+    },
+
+    onResponseError({ request: url, response, options }) {
+      const { method } = options
+      if (import.meta.client)
+        logger.withTag(`[Response Error][${method}]`).trace(`${url}: `, response)
+    },
+  }
+
+  const api = $fetch.create<CoreApiResponse<DataT>>(defaults)
+
+  return { api, defaultFetchOptions: defaults }
+}
+
+// 專案的 API 設定
 export async function usePublicApi<DataT>(
   url: string,
   fetchOptions?: NitroFetchOptions<NitroFetchRequest>,
   siteOptions?: SiteOptions,
 ): Promise<DataT | CoreApiResponse<DataT> | undefined> {
-  const { $api, $defaultFetchOptions } = useNuxtApp()
-  const params: NitroFetchOptions<NitroFetchRequest> = defu(fetchOptions, $defaultFetchOptions)
+  const { api, defaultFetchOptions } = useApi()
+  const params: NitroFetchOptions<NitroFetchRequest> = defu(fetchOptions, defaultFetchOptions)
   const toast = useToast()
-  return $api(url, params)
+  return api(url, params)
     .then((res) => {
       // API 層級的錯誤處理
       if (res.Code !== 0) {
@@ -43,23 +89,26 @@ export async function usePublicApi<DataT>(
     })
 }
 
+// 第三方 API 設定
 export async function useThirdPartyPublicApi<DataT>(
   url: string,
   fetchOptions?: NitroFetchOptions<NitroFetchRequest>,
   siteOptions?: SiteOptions,
 ): Promise<DataT | undefined> {
-  const { $api, $defaultFetchOptions } = useNuxtApp()
+  const { api, defaultFetchOptions } = useApi()
+  const logger = useLogger()
   const params: NitroFetchOptions<NitroFetchRequest> = defu({
     ...fetchOptions,
-    onResponse({ request: url, response }) {
+    onResponse({ request: url, response, options }) {
       const res = response._data as DataT
+      const { method } = options
 
       if (import.meta.client)
-        console.trace(`[Response] ${url}: `, res)
+        logger.withTag(`[Response][${method}]`).trace(`[Response] ${url}: `, res)
     },
-  }, $defaultFetchOptions)
+  }, defaultFetchOptions)
   const toast = useToast()
-  return $api<DataT>(url, params)
+  return api<DataT>(url, params)
     .then((res) => {
       return res
     })
@@ -74,6 +123,7 @@ export async function useThirdPartyPublicApi<DataT>(
     })
 }
 
+// 專案的需要驗證 API 設定
 export async function useAuthApi<DataT>(
   url: string,
   fetchOptions?: NitroFetchOptions<NitroFetchRequest>,
@@ -88,6 +138,7 @@ export async function useAuthApi<DataT>(
   return usePublicApi<DataT>(url, params, siteOptions)
 }
 
+// 以下為個別 API 的使用範例
 export async function useLangApi(langCode: string) {
   const config = useRuntimeConfig()
   const langUrl = `${config.public.i18n.baseUrl}/Language/${langCode}?GroupIds[]=TOURNWEB`
@@ -119,12 +170,3 @@ export async function useThirdPartyErrorApi() {
   const res = await useThirdPartyPublicApi<Record<string, any>>(url, {}, { alert: true })
   return res
 }
-
-// page 裡呼叫
-// const { data, pending, error, refresh } = await useAsyncData<T>(
-//   '',
-//   (): Promise<T> => useTrounApi<T>(),
-// )
-
-// 為了向後兼容，保留舊的使用方式
-export { usePublicApi as useApi }
