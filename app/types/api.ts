@@ -1,6 +1,3 @@
-import type { $Fetch, NitroFetchRequest } from 'nitropack/types'
-import type { FetchOptions } from 'ofetch'
-
 export type CoreApiResponse<DataT> = {
   Code: number
   Data: DataT
@@ -22,17 +19,8 @@ export class CoreApiErrorResponse<DataT> implements CoreApiResponse<DataT> {
   }
 }
 
-export type SiteOptions = {
+export type ApiOptions = {
   alert?: boolean
-  thirdParty?: boolean
 }
 
 export type DataT = any
-
-// 為了讓 TypeScript 能夠正確推導型別
-declare module '#app' {
-  interface NuxtApp {
-    $api: $Fetch<CoreApiResponse<DataT>, NitroFetchRequest>
-    $defaultFetchOptions: FetchOptions
-  }
-}
