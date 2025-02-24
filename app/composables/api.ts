@@ -1,6 +1,6 @@
 import type { NitroFetchOptions, NitroFetchRequest } from 'nitropack/types'
 import type { FetchOptions } from 'ofetch'
-import type { CoreApiResponse, DataT, SiteOptions } from '~/types/api'
+import type { ApiOptions, CoreApiResponse, DataT } from '~/types/api'
 import { useRuntimeConfig } from '#app/nuxt'
 import { useLocalStorage, useToast } from '#imports'
 import defu from 'defu'
@@ -55,7 +55,7 @@ function useApi() {
 export async function usePublicApi<DataT>(
   url: string,
   fetchOptions?: NitroFetchOptions<NitroFetchRequest>,
-  siteOptions?: SiteOptions,
+  apiOptions?: ApiOptions,
 ): Promise<DataT | CoreApiResponse<DataT> | undefined> {
   const { api, defaultFetchOptions } = useApi()
   const params: NitroFetchOptions<NitroFetchRequest> = defu(fetchOptions, defaultFetchOptions)
@@ -76,7 +76,7 @@ export async function usePublicApi<DataT>(
       return res
     })
     .catch((error: FetchError | CoreApiResponse<any>) => {
-      if (siteOptions?.alert) {
+      if (apiOptions?.alert) {
         if (error instanceof CoreApiErrorResponse) {
           toast.add({ title: 'API 發生錯誤，CoreApiErrorResponse' })
         }
@@ -93,7 +93,7 @@ export async function usePublicApi<DataT>(
 export async function useThirdPartyPublicApi<DataT>(
   url: string,
   fetchOptions?: NitroFetchOptions<NitroFetchRequest>,
-  siteOptions?: SiteOptions,
+  apiOptions?: ApiOptions,
 ): Promise<DataT | undefined> {
   const { api, defaultFetchOptions } = useApi()
   const logger = useLogger()
@@ -113,7 +113,7 @@ export async function useThirdPartyPublicApi<DataT>(
       return res
     })
     .catch((error: FetchError) => {
-      if (siteOptions?.alert) {
+      if (apiOptions?.alert) {
         if (error instanceof FetchError) {
           toast.add({ title: 'API 發生錯誤，FetchError' })
         }
@@ -127,7 +127,7 @@ export async function useThirdPartyPublicApi<DataT>(
 export async function useAuthApi<DataT>(
   url: string,
   fetchOptions?: NitroFetchOptions<NitroFetchRequest>,
-  siteOptions?: SiteOptions,
+  apiOptions?: ApiOptions,
 ): Promise<DataT | CoreApiResponse<DataT> | undefined> {
   const token = useLocalStorage('token', '')
   const authConfig = {
@@ -135,7 +135,7 @@ export async function useAuthApi<DataT>(
   }
   const params: NitroFetchOptions<NitroFetchRequest> = defu(fetchOptions, authConfig)
 
-  return usePublicApi<DataT>(url, params, siteOptions)
+  return usePublicApi<DataT>(url, params, apiOptions)
 }
 
 // 以下為個別 API 的使用範例
@@ -146,10 +146,9 @@ export async function useLangApi(langCode: string) {
   return res
 }
 
-export async function useLangErrorApi(langCode: string) {
-  const config = useRuntimeConfig()
-  const langUrl = `${config.public.i18n.baseUrl}/Language2/${langCode}?GroupIds[]=TOURNWEB`
-  const res = await usePublicApi<Record<string, any>>(langUrl, {}, { alert: true })
+export async function useProjectErrorApi(langCode: string) {
+  const url = `/foo/bar/${langCode}`
+  const res = await usePublicApi<Record<string, any>>(url, {}, { alert: true })
   return res
 }
 

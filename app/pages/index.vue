@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useAsyncData } from '#app/composables/asyncData'
 import { useMouse } from '@vueuse/core'
-import { useLangApi, useLangErrorApi, useLangFetchErrorApi, useThirdPartyApi, useThirdPartyErrorApi } from '../composables/api'
+import { useLangApi, useLangFetchErrorApi, useProjectErrorApi, useThirdPartyApi, useThirdPartyErrorApi } from '../composables/api'
 import { useUseExample } from '../composables/example'
 import { useLogger } from '../composables/logger'
 
@@ -27,7 +27,7 @@ async function openNormal() {
   logger.log('page call: ', result)
 }
 async function openApiError() {
-  const result = await useLangErrorApi('zh-CN')
+  const result = await useProjectErrorApi('zh-CN')
   logger.log('page call: ', result)
 }
 async function openFetchError() {
