@@ -6,24 +6,6 @@ export default defineNuxtConfig({
     host: '0.0.0.0',
   },
 
-  // vite: {
-  //   // 停用程式碼最小化
-  //   build: {
-  //     minify: false,
-  //     cssMinify: false,
-  //     sourcemap: true,
-  //   },
-  // },
-
-  // nitro: {
-  //   // 停用伺服器端程式碼最小化
-  //   minify: false,
-  // },
-
-  // imports: {
-  //   autoImport: false,
-  // },
-
   future: {
     compatibilityVersion: 4,
   },
@@ -32,14 +14,11 @@ export default defineNuxtConfig({
     asyncContext: true,
     //   scanPageMeta: true,
   },
-
+  extends: [
+    'github:chrislu-igs/base-layer',
+  ],
   modules: [
-    '@nuxt/ui',
     '@nuxt/eslint',
-    'nuxt-eslint-auto-explicit-import',
-    '@nuxt/fonts',
-    // ['@vueuse/nuxt', { autoImports: false }],
-    '@vueuse/nuxt',
     '@nuxtjs/i18n',
   ],
 
@@ -70,5 +49,5 @@ export default defineNuxtConfig({
     ],
   },
 
-  compatibilityDate: '2025-01-20',
+  compatibilityDate: '2025-02-27',
 })

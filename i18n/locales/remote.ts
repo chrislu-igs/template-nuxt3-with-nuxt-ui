@@ -1,6 +1,11 @@
-import type { CoreApiResponse } from '~/types/api'
 import { tryUseNuxtApp, useRuntimeConfig } from '#app/nuxt'
 import { defineI18nLocale } from '#imports'
+
+type CoreApiResponse<DataT> = {
+  Code: number
+  Data: DataT
+  Message?: string
+}
 
 export default defineI18nLocale(async (locale) => {
   const nuxtApp = tryUseNuxtApp()

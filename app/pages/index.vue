@@ -1,18 +1,12 @@
 <script lang="ts" setup>
+import type { ThirdPartyDataPost } from '~/types/api'
 import { useAsyncData } from '#app/composables/asyncData'
+import { useLogger } from '#imports'
 import { useMouse } from '@vueuse/core'
-import { useLangApi, useLangFetchErrorApi, useProjectErrorApi, useThirdPartyApi, useThirdPartyErrorApi } from '../composables/api'
-import { useUseExample } from '../composables/example'
-import { useLogger } from '../composables/logger'
+import { useLangApi, useLangFetchErrorApi, useProjectErrorApi, useThirdPartyApi, useThirdPartyErrorApi } from '~/composables/api'
 
-useUseExample()
 const logger = useLogger().withTag('home page')
-type ThirdPartyDataPost = {
-  userId: number
-  id: number
-  title: string
-  body: string
-}
+
 const { x, y } = useMouse()
 
 // 頁面級別的 API，供整個頁面使用，可使用多個 $fetch API 組成
